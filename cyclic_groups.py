@@ -8,7 +8,7 @@ def gcd(a, b):
         a, b = b, a % b
     return a
 
-def find_modular_multiplicative_group():
+def find_modular_multiplicative_group(n):
     # Find the modular multiplicative group of integers modulo n.
     group = []
     for i in range(1, n):
@@ -17,7 +17,7 @@ def find_modular_multiplicative_group():
 
     return group
 
-def find_element_order(element):
+def find_element_order(element, n):
     if element == 1:
         return 1
     else:
@@ -28,25 +28,34 @@ def find_element_order(element):
             counter += 1
         return counter
 
-def is_a_generator(element):
-    if find_element_order(element) == len(cyclic_group):
+def is_a_generator(element, n, group_size):
+    if find_element_order(element, n) == group_size:
         return True
+    else:
+        return False
 
-def find_generators(cyclic_group):
+def find_generators(cyclic_group, n):
     generators = []
+    group_size = len(cyclic_group)
     for element in cyclic_group:
-        if is_a_generator(element):
+        if is_a_generator(element, n, group_size):
             generators.append(element)
 
     return generators
 
 if __name__ == "__main__":
-    cyclic_group = find_modular_multiplicative_group()
-    print(f"Modular multiplicative group of integers modulo {n}: {cyclic_group}\nThis group has order: {len(cyclic_group)}")
+    non_cyclic = []
+    cyclic = []
 
-    generators = find_generators(cyclic_group)
-    if len(generators) == 0:
-        print("This group has no generators and is not cyclic.")
-    else:
-        print("This group has generators and is cyclic.")
-        print(f"Generators of the group: {generators}")
+    for i in range(1, n):
+        cyclic_group = find_modular_multiplicative_group(i)
+        # print(f"Modular multiplicative group of integers modulo {n}: {cyclic_group}\nThis group has order: {len(cyclic_group)}")
+
+        generators = find_generators(cyclic_group, i)
+        if len(generators) == 0:
+            non_cyclic.append(i)
+        else:
+            cyclic.append(i)
+        
+    print(f"Non-cyclic groups up to {n}: {non_cyclic}")
+    print(f"Cyclic groups up to {n}: {cyclic}")
