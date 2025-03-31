@@ -8,7 +8,7 @@ def gcd(a, b):
         a, b = b, a % b
     return a
 
-def find_modular_multiplicative_group(n):
+def find_modular_multiplicative_group():
     # Find the modular multiplicative group of integers modulo n.
     group = []
     for i in range(1, n):
@@ -17,7 +17,7 @@ def find_modular_multiplicative_group(n):
 
     return group
 
-def find_element_order(element, n):
+def find_element_order(element):
     if element == 1:
         return 1
     else:
@@ -28,10 +28,25 @@ def find_element_order(element, n):
             counter += 1
         return counter
 
+def is_a_generator(element):
+    if find_element_order(element) == len(cyclic_group):
+        return True
+
+def find_generators(cyclic_group):
+    generators = []
+    for element in cyclic_group:
+        if is_a_generator(element):
+            generators.append(element)
+
+    return generators
+
 if __name__ == "__main__":
-    cyclic_group = find_modular_multiplicative_group(n)
+    cyclic_group = find_modular_multiplicative_group()
     print(f"Modular multiplicative group of integers modulo {n}: {cyclic_group}\nThis group has order: {len(cyclic_group)}")
 
-    for element in cyclic_group:
-        order = find_element_order(element, n)
-        print(f"{element} has order {order}")
+    generators = find_generators(cyclic_group)
+    if len(generators) == 0:
+        print("This group has no generators and is not cyclic.")
+    else:
+        print("This group has generators and is cyclic.")
+        print(f"Generators of the group: {generators}")
